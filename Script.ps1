@@ -43,16 +43,16 @@ $pfxFileByte = $x509Cert.Export($type, $password)
 
 #2. Import Cert
 #https://learn.microsoft.com/en-us/powershell/module/az.network/add-azapplicationgatewaysslcertificate?view=azps-8.3.0
-$AppGW = Get-AzApplicationGateway -Name "AppGW1" -ResourceGroupName "Practice"
+$AppGW = Get-AzApplicationGateway -Name "AppGW1" -ResourceGroupName "Resourcegroupname"
 $AppGW = Add-AzApplicationGatewaySslCertificate -ApplicationGateway $AppGW -Name $CertName -CertificateFile "$($CertName).pfx" -Password $password
 Set-AzApplicationGateway -ApplicationGateway $AppGw
 
 
 #3. Update listener
-$AppGw = Get-AzApplicationGateway -Name "AppGW1" -ResourceGroupName "Practice"
+$AppGw = Get-AzApplicationGateway -Name "ApGW1" -ResourceGroupName "Resourcegroupname"
 $FEP = Get-AzApplicationGatewayFrontendPort -Name "port_443" -ApplicationGateway $AppGw
 $FrontEndIP= Get-AzApplicationGatewayFrontendIPConfig -Name "appGwPublicFrontendIp" -ApplicationGateway $AppGw
 $Cert = Get-AzApplicationGatewaySslCertificate -Name $CertName -ApplicationGateway $AppGW
-$AppGw = Set-AzApplicationGatewayHttpListener -ApplicationGateway $AppGw -Name "thenextshop.ga_rule" -Protocol "Https" -FrontendIpConfiguration $FrontEndIP -FrontendPort $FEP -SslCertificate $Cert -HostName "thenextshop.ga"
+$AppGw = Set-AzApplicationGatewayHttpListener -ApplicationGateway $AppGw -Name "hostname.com_listener" -Protocol "Https" -FrontendIpConfiguration $FrontEndIP -FrontendPort $FEP -SslCertificate $Cert -HostName "hostname.com"
 Set-AzApplicationGateway -ApplicationGateway $AppGw
 
